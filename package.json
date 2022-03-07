@@ -29,7 +29,13 @@
         "onCommand:nasc.touchBar.enableFuncGroup",
         "onCommand:nasc.touchBar.enableSrcGroup",
         "onCommand:nasc.touchBar.enableEditorGroup",
-        "onCommand:nasc.touchBar.enableCursorsGroup"
+        "onCommand:nasc.touchBar.enableCursorsGroup",
+        "onCommand:nasc.touchBar.installScript",
+        "onCommand:nasc.touchBar.serveScript",
+        "onCommand:nasc.touchBar.buildScript",
+        "onCommand:nasc.touchBar.lintScript",
+        "onCommand:nasc.touchBar.stopTerminal",
+        "onCommand:nasc.touchBar.refreshTerminal"
     ],
     "main": "./extension",
     "capabilities": {
@@ -37,6 +43,46 @@
     },
     "contributes": {
         "commands": [
+            {
+                "command": "workbench.action.files.saveAll",
+                "title": "💾",
+                "group": "nasc"
+            },
+            {
+                "command": "editor.toggleFold",
+                "title": "Fold",
+                "group": "nasc"
+            },
+            {
+                "command": "nasc.touchBar.installScript",
+                "title": "Install",
+                "group": "nasc"
+            },
+            {
+                "command": "nasc.touchBar.serveScript",
+                "title": "🍽",
+                "group": "nasc"
+            },
+            {
+                "command": "nasc.touchBar.buildScript",
+                "title": "🛠",
+                "group": "nasc"
+            },
+            {
+                "command": "nasc.touchBar.lintScript",
+                "title": "Lint",
+                "group": "nasc"
+            },   
+            {
+                "command": "nasc.touchBar.stopTerminal",
+                "title": "🛑",
+                "group": "nasc"
+            },
+            {
+                "command": "nasc.touchBar.refreshTerminal",
+                "title": "↺",
+                "group": "nasc"
+            },    
             {
                 "command": "nasc.touchBar.goToDefinition",
                 "group": "nasc",
@@ -186,6 +232,46 @@
         ],
         "menus": {
             "touchBar": [
+                {
+                    "command": "workbench.action.files.saveAll",
+                    "group": "nasc",
+                    "when": "config.nasc-touchbar.saveAll && !enabledGroup"
+                },
+                {
+                    "command": "editor.toggleFold",
+                    "group": "nasc",
+                    "when": "config.nasc-touchbar.fold && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.installScript",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.installScript && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.serveScript",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.serveScript && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.buildScript",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.buildScript && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.lintScript",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.lintScript && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.stopTerminal",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.stopTerminal && !enabledGroup"
+                },
+                {
+                    "command": "nasc.touchBar.refreshTerminal",
+                    "group": "terminalStuff",
+                    "when": "config.nasc-touchbar.refreshTerminal && !enabledGroup"
+                },
                 {
                     "command": "nasc.touchBar.enableFuncGroup",
                     "group": "nasc",
@@ -418,6 +504,46 @@
                 "title": "Nasc Touch Bar Settings",
                 "type": "object",
                 "properties": {
+                    "nasc-touchbar.saveAll": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Save all files"
+                    },
+                    "nasc-touchbar.fold": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Fold / Unfold current scope"
+                    },
+                    "nasc-touchbar.installScript": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Install current projects devDependencies using NPM"
+                    },
+                    "nasc-touchbar.serveScript": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Serve current project using NPM"
+                    },
+                    "nasc-touchbar.buildScript": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Build current project using NPM"
+                    },
+                    "nasc-touchbar.lintScript": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Lint current project using NPM"
+                    },
+                    "nasc-touchbar.stopTerminal": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Send ctrl + c to terminal"
+                    },
+                    "nasc-touchbar.refreshTerminal": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Send ctrl + c to terminal and rerun last command (up arrow)"
+                    },
                     "nasc-touchbar.goToDefinition": {
                         "type": "boolean",
                         "default": true,

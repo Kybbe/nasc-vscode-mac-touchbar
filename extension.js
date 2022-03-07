@@ -67,6 +67,12 @@ function addCursor (direction) {
     editor.selections = ar
 }
 
+function getActiveTerminal() {
+    const activeTerminal = vscode.window.activeTerminal ?? vscode.window.createTerminal();
+    activeTerminal.show();
+    return activeTerminal;
+  }
+
 function activate(context) {
     const go2Def = new GoDefinitionProvider()
     const aCA = vscode.commands.registerCommand('nasc.touchBar.addCursorAbove', function () {
@@ -104,11 +110,34 @@ function activate(context) {
         vscode.commands.executeCommand('setContext', 'enabledCursorsGroup', true)
         // vscode.workspace.getConfiguration().update('nasc-touchbar.enabledGroup', 4)
     })
-
     vscode.commands.registerCommand('nasc.touchBar.goToDefinition', function () {
         vscode.commands.executeCommand('editor.action.goToDeclaration');
-    });
-    
+    })
+
+    vscode.commands.registerCommand('nasc.touchBar.installScript', function () {
+        const activeTerminal = getActiveTerminal();
+        activeTerminal.sendText("npm i");
+    })
+    vscode.commands.registerCommand('nasc.touchBar.serveScript', () => {
+        const activeTerminal = getActiveTerminal();
+        activeTerminal.sendText("npm run serve");
+    })
+    vscode.commands.registerCommand('nasc.touchBar.lintScript', () => {
+        const activeTerminal = getActiveTerminal();
+        activeTerminal.sendText("npm run lint");
+    })
+    vscode.commands.registerCommand('nasc.touchBar.buildScript', () => {
+        const activeTerminal = getActiveTerminal();
+        activeTerminal.sendText('npm run build');
+    })
+    vscode.commands.registerCommand('nasc.touchBar.stopTerminal', () => {
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" },);
+    })
+    vscode.commands.registerCommand('nasc.touchBar.refreshTerminal', () => {
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" },);
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u001b[A\n" },);
+    })
+
     const prov = vscode.languages.registerDefinitionProvider(
         GO_MODE, go2Def
     )

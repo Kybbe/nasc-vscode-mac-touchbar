@@ -72,6 +72,15 @@ Please have in mind the limit of 5 active buttons (if you have the OS control st
 - "nasc-touchbar.enableSrcGroup": (default _false_)  Adds a group with the buttons related to the _Source code_
 - "nasc-touchbar.enableCursorsGroup": (default _false_)  Adds a group with the buttons related to your _cursors_
 - "nasc-touchbar.enableEditorGroup": (default _false_)  Adds a group with the buttons related to _editor's tools_
+- "nasc-touchbar.saveAll": (default _false_) Save all files
+- "nasc-touchbar.serveScript": (default _false_) Serve current project using NPM
+- "nasc-touchbar.installScript": (default _false_) Install current dev dependencies using NPM
+- "nasc-touchbar.buildScript": (default _false_) Build current project using NPM
+- "nasc-touchbar.lintScript": (default _false_) Run Lint in current project using NPM
+- "nasc-touchbar.stopTerminal": (default _false_) Send ctrl+c to terminal, stoping running process
+- "nasc-touchbar.refreshTerminal": (default _false_) Send ctrl+c, up-arrow and enter to terminal to stop and rerun last process
+
+
 
 ## Groups
 
