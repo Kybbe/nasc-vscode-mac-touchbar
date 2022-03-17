@@ -68,10 +68,28 @@ function addCursor (direction) {
 }
 
 function getActiveTerminal() {
-    const activeTerminal = vscode.window.activeTerminal ?? vscode.window.createTerminal();
+    var activeTerminal = "";
+    if(vscode.window.activeTerminal) {
+        activeTerminal = vscode.window.activeTerminal;
+    } else  {
+        activeTerminal = vscode.window.createTerminal();
+    }
     activeTerminal.show();
     return activeTerminal;
   }
+
+  let orange = vscode.window.createOutputChannel("Nasc");
+  function writeStuff(message) {
+    orange.appendLine(message);
+    orange.show();
+}
+
+async function packageJsonScripts() {
+    let packageJsonPath = await vscode.workspace.findFiles('package.json', '/node_modules/', 1);
+    let package = JSON.parse(await vscode.workspace.openTextDocument(packageJsonPath[0]).then(doc => doc.getText()));
+
+    return package.scripts;
+}
 
 function activate(context) {
     const go2Def = new GoDefinitionProvider()
@@ -114,7 +132,7 @@ function activate(context) {
         vscode.commands.executeCommand('editor.action.goToDeclaration');
     })
 
-    vscode.commands.registerCommand('nasc.touchBar.installScript', function () {
+    /* vscode.commands.registerCommand('nasc.touchBar.installScript', function () {
         const activeTerminal = getActiveTerminal();
         activeTerminal.sendText("npm i");
     })
@@ -129,13 +147,31 @@ function activate(context) {
     vscode.commands.registerCommand('nasc.touchBar.buildScript', () => {
         const activeTerminal = getActiveTerminal();
         activeTerminal.sendText('npm run build');
-    })
+    }) */
     vscode.commands.registerCommand('nasc.touchBar.stopTerminal', () => {
-        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" },);
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" });
     })
     vscode.commands.registerCommand('nasc.touchBar.refreshTerminal', () => {
-        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" },);
-        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u001b[A\n" },);
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u0003" });
+        vscode.commands.executeCommand("workbench.action.terminal.sendSequence", {"text": "\u001b[A\n" });
+    })
+
+    /* const asdasd = async function createCommands() {
+        let scripts = await packageJsonScripts();
+        for(let script in scripts) {
+            writeStuff(script)
+            vscode.commands.registerCommand(`nasc.touchBar.runScript.${script}`, function () {
+                const activeTerminal = getActiveTerminal();
+                activeTerminal.sendText("npm run " + script);
+            })
+        }
+    } */
+
+    vscode.commands.registerCommand('nasc.touchBar.runScript', async function () {
+        let scripts = await packageJsonScripts();
+        let script = await vscode.window.showQuickPick(Object.keys(scripts));
+        const activeTerminal = getActiveTerminal();
+        activeTerminal.sendText("npm run " + script);
     })
 
     const prov = vscode.languages.registerDefinitionProvider(
@@ -146,6 +182,7 @@ function activate(context) {
     // context.subscriptions.push(eFG)
     context.subscriptions.push(prov);
 }
+
 exports.activate = activate;
 
 function deactivate() {
